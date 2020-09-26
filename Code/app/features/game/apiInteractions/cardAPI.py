@@ -16,6 +16,14 @@ class cardAPI:
         raise RuntimeError("Une erreur est survenue lors de l'appel de l'API")
 
     @staticmethod
+    def newCustomDeck(listofcard: str):
+        response = requests.get(
+            "https://deckofcardsapi.com/api/deck/new/shuffle/?cards={}".format(listofcard))
+        if (response.status_code == 200) or (response.status_code == 201):
+            return(response.json()["deck_id"])
+        raise RuntimeError("Une erreur est survenue lors de l'appel de l'API")
+
+    @staticmethod
     def drawDeck(id, count=1):
         response = requests.get(
             "https://deckofcardsapi.com/api/deck/{}/draw/?count={}".format(id, count))
@@ -47,3 +55,6 @@ class cardAPI:
             strCards = strCards[:-1]
         response = requests.get(
             "https://deckofcardsapi.com/api/deck/{}/pile/{}pile/add/?cards={}".format(id, gameId, strCards))
+        if not ((response.status_code == 200) or (response.status_code == 201)):
+            raise RuntimeError(
+                "Une erreur est survenue lors de l'appel de l'API")
