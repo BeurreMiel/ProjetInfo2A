@@ -1,13 +1,14 @@
 class Card:
 
-    def __init__(self, valeur=None, couleur=None):
+    def __init__(self, valeur=None, couleur=None,code =None):
         self.valeur = valeur,
-        self.couleur = couleur
+        self.couleur = couleur, 
+        self.code = code
 
     def __str__(self): 
         data = (self.valeur,self.couleur)
         return("{} de {}".format(*data))
-        
+
     def __eq__(self,autrecarte): 
         if isinstance(autrecarte, Card):
             return(self.valeur == autrecarte.valeur) and (self.couleur == autrecarte.couleur)
