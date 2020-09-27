@@ -46,7 +46,7 @@ class cardAPI:
             return(response.json()["deck_id"])
         raise RuntimeError("Une erreur est survenue lors de l'appel de l'API")
 
-    @staticmethod
+"""     @staticmethod
     def addToPile(id, gameId, cards=[]):
         strCards = ""
         for card in cards:
@@ -60,8 +60,7 @@ class cardAPI:
                 "Une erreur est survenue lors de l'appel de l'API")
 
     @staticmethod
-    def getPileListOfCards(id, gameId): 
-        """ TODO : Test api response """ 
+    def getPileListOfCards(id, gameId):
         response = requests.get(
             "https://deckofcardsapi.com/api/deck/{}/pile/{}pile/list/".format(id, gameId))
         if (response.status_code == 200) or (response.status_code == 201):
@@ -72,5 +71,4 @@ class cardAPI:
                             [i]["suits"], jsonfile["player1"]["cards"][i]["suits"])
                 listCard.append(card)
             return(listCard)
-
-
+ """

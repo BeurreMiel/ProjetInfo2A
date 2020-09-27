@@ -23,22 +23,35 @@ class Team:
 class Belote(abstractGame):
     def __init__(self, players, deck):
         super().__init__(players, deck)
-        """ self.premierJoueur = self.players[0] peu être pas utile"""
+        self.playersTable = self.players
         self.atout = Optional[str],
         self.pick = Optional[Joueur] = None
 
-    def checkPlayerNumber(self):
+    def _checkPlayerNumber(self):
         if len(self.players) != 4:
             raise Exception(
                 "La belote ne se joue qu'a 4 joueurs")
 
-    def countPoints(plis, self):
-        count = 0
+    @staticmethod
+    def _countPoints(plis, self):
+        count: int
+        gagnant: int
+        listPoint = []  # index du gagnant dans la tourne actuelle
+        coupe = False
+        premiereCouleur = plis[0].couleur
         for card in plis:
             if card.couleur == self.atout:
-                count += self.pointAtout[card.valeur]
+                listPoint.append(self.pointAtout[card.valeur])
+                if card.couleur != premiereCouleur:
+                    coupe = True
+                    gagnant = len(listPoint)-1
+                    # TODO: gérér le cas de plusieurs coupe
             else:
-                count += self.pointNonAtout[card.valeur]
+                listPoint.append(self.pointNonAtout[card.valeur])
+        if not coupe:
+            gagnant = listPoint.index(max(listPoint))
+        count = sum(listPoint)
+        return(count, gagnant)
 
     @property
     def listCarteAuth(self):
@@ -69,11 +82,14 @@ class Belote(abstractGame):
         }
 
     @staticmethod
-    def verifCarteValide(carte, main, plis):
+    def _verifCarteValide(carte, main, plis):
         """ Vérifie si la carte posée par le joueur est valide"""
         pass
 
+    @staticmethod
     def tour(self, deck: PileCard):
+        plis = []
+        maitre: int  # doit correspondre à la place du joueur par rapport au premier joueur
         for player in self.players:
             flag = False
             while not flag:
@@ -87,10 +103,16 @@ class Belote(abstractGame):
                         pose = int(pose)
                     except ValueError:
                         print("Le choix doit être un entier")
-                Belote.verifCarteValide(player.hand()[pose], player.hand, self.atout, plis)
+                Belote._verifCarteValide(
+                    player.hand()[pose], player.hand, self.atout, plis)
 
-            deck.addToPile("BeloteID", player.hand()[pose])
+            plis.append(player.hand()[pose])
             player.poserCard(player.hand()[pose])
+        # détermine qui gagne le plis
+        result = Belote._countPoints(plis)
+        name = player[result[1]].name
+        self.players = utils.listRotate(self.players, result[1])
+        return (result[0], name)
 
     def gameLoop(self):
         scoreTeam1 = 0
@@ -145,6 +167,9 @@ class Belote(abstractGame):
                 else:
                     player.drawCard(deck.drawDeck(deck.id, 3))
 
+            indexTour = 0
             while len(self.player[0].cards) > 0:
-                pass
-            # coder le tour de belote
+                score = Belote.tour(deck)
+                self.playersTable = utils.listRotate(self.playersTable, 1)
+
+                # TODO: Implémenter le comptage correct des scores

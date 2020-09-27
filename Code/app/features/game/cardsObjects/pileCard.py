@@ -25,17 +25,19 @@ class PileCard:
     def shuffleDeck(self) -> None:
         self.id = cardAPI.shuffleDeck(self.id)
 
-    def drawDeck(self,count) -> list[Card]:
-        result = cardAPI.drawDeck(self.id,count)
+    def drawDeck(self, count) -> list[Card]:
+        result = cardAPI.drawDeck(self.id, count)
         self.id = result[1]
         return(result[0])
 
-    def shufflePile(self):
+
+"""     def shufflePile(self):
         pass
 
     def drawPile(self):
         pass
     
     def addToPile(self, gameId,cards): 
-        cardAPI.addToPile(self.id,gameId,cards)
-    # Todo : Implement custom pile drawing and shuffling
+        cardAPI.addToPile(self.id,gameId,cards) """
+
+# Todo : Implement custom pile drawing and shuffling
