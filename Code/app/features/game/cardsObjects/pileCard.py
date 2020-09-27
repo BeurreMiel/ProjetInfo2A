@@ -35,5 +35,7 @@ class PileCard:
 
     def drawPile(self):
         pass
-
+    
+    def addToPile(self, gameId,cards): 
+        cardAPI.addToPile(self.id,gameId,cards)
     # Todo : Implement custom pile drawing and shuffling

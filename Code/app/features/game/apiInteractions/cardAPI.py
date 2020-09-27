@@ -58,3 +58,19 @@ class cardAPI:
         if not ((response.status_code == 200) or (response.status_code == 201)):
             raise RuntimeError(
                 "Une erreur est survenue lors de l'appel de l'API")
+
+    @staticmethod
+    def getPileListOfCards(id, gameId): 
+        """ TODO : Test api response """ 
+        response = requests.get(
+            "https://deckofcardsapi.com/api/deck/{}/pile/{}pile/list/".format(id, gameId))
+        if (response.status_code == 200) or (response.status_code == 201):
+            jsonfile = response.json()
+            listCard = []
+            for i in len(jsonfile["player1"]["cards"]):
+                card = Card(jsonfile["player1"]["cards"][i]["value"], jsonfile["player1"]["cards"]
+                            [i]["suits"], jsonfile["player1"]["cards"][i]["suits"])
+                listCard.append(card)
+            return(listCard)
+
+
